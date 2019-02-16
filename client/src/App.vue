@@ -60,177 +60,94 @@
 </template>
 
 <script>
-  import Login from './components/Login'
-  import LoginService from './services/LoginService'
-  import UserService from './services/UserService'
-  import UserPhoto from './components/UserPhoto'
+import Login from './components/Login'
+import UserPhoto from './components/UserPhoto'
+import LoginService from './services/LoginService'
+import UserService from './services/UserService'
 
-  export default {
-    components: {Login, UserPhoto},
-    data () {
-      return {
-        showLogin: false,
-        isDarkTheme: true,
-        drawer: false,
-        items: [
-          {icon: 'people', title: 'Manage Users', name: 'users'}
-        ],
-        miniVariant: false,
-        title: 'Crowd Source',
-        user: {id: 0},
-        snackbar: false,
-        snackbarMessage: '',
-        snackbarStyle: '',
-        activeMenuItem: ''
+export default {
+  name: 'App',
+  components: { Login, UserPhoto },
+  data () {
+    return {
+      showLogin: false,
+      isDarkTheme: true,
+      drawer: false,
+      items: [
+        { icon: 'people', title: 'Manage Users', name: 'users' }
+      ],
+      miniVariant: false,
+      user: { id: 0 },
+      snackbar: false,
+      snackbarMessage: '',
+      snackbarStyle: '',
+      activeMenuItem: ''
+    }
+  },
+  created () {
+    this.getUserInfo()
+    this.isDarkTheme = window.localStorage['dark'] === 'true'
+  },
+  methods: {
+    login () {
+      this.showLogin = true
+    },
+    toggleTheme () {
+      this.isDarkTheme = !this.isDarkTheme
+      window.localStorage['dark'] = this.isDarkTheme
+    },
+    createAccount () {
+      this.showLogin = false
+      this.$router.push('/user')
+    },
+    loginSuccess (user) {
+      console.log(user)
+      this.setUser(user)
+      this.showLogin = false
+    },
+    async logout () {
+      try {
+        await LoginService.logout()
+      } finally {
+        this.user = {}
+        this.$router.push('/')
       }
     },
-    created () {
-      this.getUserInfo()
-      this.isDarkTheme = window.localStorage['dark'] === 'true'
-    },
-    methods: {
-      login () {
-        this.showLogin = true
-      },
-      toggleTheme () {
-        this.isDarkTheme = !this.isDarkTheme
-        window.localStorage['dark'] = this.isDarkTheme
-      },
-      createAccount () {
-        this.showLogin = false
-        this.$router.push('/user')
-      },
-      loginSuccess (user) {
-        console.log(user)
-        this.setUser(user)
-        this.showLogin = false
-      },
-      async logout () {
-        try {
-          await LoginService.logout()
-        } finally {
-          this.user = {}
-          this.$router.push('/')
-        }
-      },
-      getUserInfo () {
-        if (UserService.hasToken()) {
-          UserService.me().then(this.setUser).catch(() => {
-            console.log('Token expired.')
-          })
-        }
-      },
-      showSnackbar (message, style) {
-        this.snackbarMessage = message
-        this.snackbarStyle = style
-        this.snackbar = true
-      },
-      setTitle (title) {
-        this.title = title
-        this.$forceUpdate()
-      },
-      setUser (user) {
-        if (!user) return
-        this.user = user
-        this.user.isAdmin = user.roleMappings.find(r => r.role.name === 'admin') !== undefined
-        console.log(this.user)
-        this.$forceUpdate()
-      },
-      setActiveMenuItem (name) {
-        this.activeMenuItem = name
-        this.$forceUpdate()
-        this.drawer = false
-      },
-      menuItemClicked (item) {
-        this.$router.push({name: item.name})
-        this.setActiveMenuItem(item.name)
-      },
-      isActiveMenuItem (item) {
-        return this.activeMenuItem === item.name
+    getUserInfo () {
+      if (UserService.hasToken()) {
+        UserService.me().then(this.setUser).catch(() => {
+          console.log('Token expired.')
+        })
       }
+    },
+    showSnackbar (message, style) {
+      this.snackbarMessage = message
+      this.snackbarStyle = style
+      this.snackbar = true
+    },
+    setTitle (title) {
+      this.title = title
+      this.$forceUpdate()
+    },
+    setUser (user) {
+      if (!user) return
+      this.user = user
+      this.user.isAdmin = user.roleMappings.find(r => r.role.name === 'admin') !== undefined
+      console.log(this.user)
+      this.$forceUpdate()
+    },
+    setActiveMenuItem (name) {
+      this.activeMenuItem = name
+      this.$forceUpdate()
+      this.drawer = false
+    },
+    menuItemClicked (item) {
+      this.$router.push({ name: item.name })
+      this.setActiveMenuItem(item.name)
+    },
+    isActiveMenuItem (item) {
+      return this.activeMenuItem === item.name
     }
   }
+}
 </script>
-
-<style>
-
-  .greyed-out::after {
-    content: '';
-    position: absolute;
-    background-color: rgba(255,255,255,.75);
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  .theme--light input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px white inset !important;
-    -webkit-text-fill-color: rgba(0, 0, 0, 0.87) !important;
-  }
-
-  .theme--dark input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px #424242 inset !important;
-    -webkit-text-fill-color: white !important;
-  }
-
-  textarea {
-    resize: none;
-  }
-
-  .display-none {
-    display: none;
-  }
-
-  .uppercase {
-    text-transform: uppercase;
-  }
-
-  .cursor-pointer {
-    cursor: pointer !important;
-  }
-
-  .pointer-events-none {
-    pointer-events: none;
-  }
-
-  .text-shadow {
-    text-shadow: 1px 1px 2px black;
-  }
-
-  .tighten-line-height {
-    line-height: 1.1 !important;
-  }
-
-  .app-toolbar .toolbar__content {
-    max-width: 1280px;
-    margin: 0 auto !important;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  .mx-auto {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-</style>
-
-<style scoped>
-
-  .router-view {
-    max-width: 1280px;
-  }
-
-  .theme--dark .avatar-container {
-    padding: 6px;
-    background-color: white;
-    border-radius: 50%;
-  }
-
-  img {
-    width: 38px;
-  }
-</style>
-

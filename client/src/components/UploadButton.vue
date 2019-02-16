@@ -9,27 +9,27 @@
 </template>
 
 <script>
-  export default {
-    name: 'UploadButton',
-    props: {
-      fab: Boolean,
-      loading: Boolean,
-      selectedCallback: Function,
-      title: String,
-      block: Boolean
-    },
-    methods: {
-      fileSelected (e) {
-        if (this.selectedCallback) {
-          if (e.target.files[0]) {
-            this.selectedCallback(e.target.files[0])
-          } else {
-            this.selectedCallback(null)
-          }
+export default {
+  name: 'UploadButton',
+  props: {
+    fab: Boolean,
+    loading: Boolean,
+    selectedCallback: Function,
+    title: String,
+    block: Boolean
+  },
+  methods: {
+    fileSelected (e) {
+      if (this.selectedCallback) {
+        if (e.target.files[0]) {
+          this.selectedCallback(e.target.files[0])
+        } else {
+          this.selectedCallback(null)
         }
       }
     }
   }
+}
 </script>
 
 <style scoped>

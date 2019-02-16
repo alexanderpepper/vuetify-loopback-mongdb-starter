@@ -1,53 +1,10 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-
-import {
-  Vuetify,
-  VApp,
-  VNavigationDrawer,
-  VList,
-  VBtn,
-  VIcon,
-  VGrid,
-  VToolbar,
-  VMenu,
-  VDivider,
-  VSnackBar,
-  VTextField,
-  VCard,
-  VDialog,
-  VCheckbox,
-  VChip,
-  VDataTable,
-  transitions
-} from 'vuetify'
-import '../node_modules/vuetify/src/stylus/app.styl'
-
-import App from './App'
+import './plugins/vuetify'
+import App from './App.vue'
 import router from './router'
-
-Vue.use(Vuetify, {
-  components: {
-    VApp,
-    VNavigationDrawer,
-    VList,
-    VBtn,
-    VIcon,
-    VGrid,
-    VToolbar,
-    VMenu,
-    VDivider,
-    VSnackBar,
-    VTextField,
-    VCard,
-    VDialog,
-    VCheckbox,
-    VChip,
-    VDataTable,
-    transitions
-  }
-})
+import './registerServiceWorker'
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.config.productionTip = false
 
@@ -61,10 +18,7 @@ Vue.filter('delimited', function (value) {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 })
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
-  template: '<App/>',
-  components: { App }
-})
+  render: h => h(App)
+}).$mount('#app')

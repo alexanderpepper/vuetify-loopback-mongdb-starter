@@ -5,13 +5,13 @@
 </template>
 
 <script>
-  export default {
-    name: 'userPhoto',
-    props: {
-      user: Object,
-      size: String
-    }
+export default {
+  name: 'userPhoto',
+  props: {
+    user: Object,
+    size: String
   }
+}
 </script>
 
 <style scoped>

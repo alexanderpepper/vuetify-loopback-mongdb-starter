@@ -11,8 +11,8 @@ class RoleService extends BaseService {
       filter: JSON.stringify({
         where: {
           and: [
-            {principalId: user.id},
-            {roleId: role.id}
+            { principalId: user.id },
+            { roleId: role.id }
           ]
         }
       })
