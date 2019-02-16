@@ -10,7 +10,7 @@
     "key": "",
     "keyId": ""
   },
-  "spotifyDB": {
+  "appDB": {
     "name": "appDB",
     "connector": "mongodb",
     "host": "127.0.0.1",

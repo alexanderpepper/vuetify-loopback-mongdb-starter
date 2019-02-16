@@ -14,29 +14,29 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "appDB"
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "appDB",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "appDB",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "appDB",
     "public": true,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "appDB",
     "public": true
   },
   "AppUser": {
-    "dataSource": "db",
+    "dataSource": "appDB",
     "public": true
   }
 }
