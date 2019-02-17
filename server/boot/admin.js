@@ -16,7 +16,8 @@ module.exports = async function (app) {
         username: 'admin',
         email: 'admin@admin.com',
         password: 'admin1234',
-        name: 'Administrator'
+        name: 'Administrator',
+        activated: true
       }
     ], function (err, users) {
       if (err) {
