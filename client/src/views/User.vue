@@ -1,40 +1,39 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container(fluid).user
     v-card
-      v-card-title
-        .headline {{ title }}
-        v-spacer
       v-card-text
+        .headline {{ title }}
         form(@submit.prevent='save')
-          .d-inline-block.mb-4
+          .mb-4.text-xs-center
             user-photo.mx-auto(size='large', :user='user')
             upload-button.d-block(:selected-callback='photoSelected', title='Upload New Photo', :loading='uploadingPhoto')
           v-text-field(label='Email', v-model='user.email', required, @blur='populateFullName')
           v-text-field(label='Name', v-model='user.name', required)
           v-text-field(label='Password', v-model='user.password', v-if='newRegistration || !user.id', type='password', required)
           v-text-field(label='Confirm Password', v-model='confirmPassword', v-if='newRegistration || !user.id', type='password', required)
-          v-checkbox(label='Activated', v-model='user.activated', v-if='currentUser.isAdmin')
           div(v-if='!editProfile && currentUser.isAdmin')
-            .caption.grey--text.text--lighten-1 Roles*
+            .d-inline.caption.grey--text.text--darken-1.mr-2 Roles
             v-chip(v-for='(roleMapping, index) in user.roleMappings', v-model='roleMapping.enabled', :key='index', close, @input='removeRole') {{ roleMapping.role.name | capitalize }}
             v-menu(offset-y, right, v-show='availableRoles.length')
-              v-btn(fab, small, slot='activator')
+              v-btn(icon, outline, slot='activator')
                 v-icon add
               v-list
                 v-list-tile(@click='addRole(role)', v-for='(role, index) in availableRoles', :key='index')
                   v-list-tile-title {{ role.name | capitalize }}
-    v-layout.my-2(row)
-      v-btn(flat, :router='true', :to='{ name: "users" }', v-if='currentUser.isAdmin') Go Back
-      v-dialog(v-show='user.id && !editProfile && currentUser.isAdmin', v-model='showDeleteDialog', width='300')
-        v-btn(slot='activator') Delete User
-        v-card
-          v-card-title.headline Delete this user?
-          v-card-text Are you sure you want to delete this user? This action cannot be undone.
-          v-card-actions
-            v-spacer
-            v-btn(flat, @click='showDeleteDialog = false') Cancel
-            v-btn(@click='deleteUser') Delete
-      v-btn(@click='save', :disabled='!isValid()') {{ newRegistration ? 'Create Account' : 'Save' }}
+            v-checkbox(label='Activated', v-model='user.activated', v-if='currentUser.isAdmin')
+        .text-xs-right
+          v-btn(flat, @click='$router.push({ name: "login" })', v-if="!currentUser.id") Sign In
+          v-btn(flat, :router='true', :to='{ name: "users" }', v-if='currentUser.isAdmin') Go Back
+          v-dialog(v-show='user.id && !editProfile && currentUser.isAdmin', v-model='showDeleteDialog', width='300')
+            v-btn(slot='activator') Delete User
+            v-card
+              v-card-title.headline Delete this user?
+              v-card-text Are you sure you want to delete this user? This action cannot be undone.
+              v-card-actions
+                v-spacer
+                v-btn(flat, @click='showDeleteDialog = false') Cancel
+                v-btn(@click='deleteUser') Delete
+          v-btn(@click='save', :disabled='!isValid()') {{ newRegistration ? 'Create Account' : 'Save' }}
 </template>
 
 <script>
@@ -48,7 +47,7 @@ import GravatarService from '../services/GravatarService'
 
 export default {
   name: 'user',
-  props: ['id', 'editProfile', 'showSnackbar', 'setTitle', 'setActiveMenuItem', 'currentUser'],
+  props: ['id', 'editProfile', 'showSnackbar', 'setActiveMenuItem', 'currentUser'],
   components: { UploadButton, UserPhoto },
   data () {
     return {
@@ -132,7 +131,6 @@ export default {
       const roleMapping = { userId: this.user.id, roleId: role.id }
       roleMapping.role = this.roles.filter(r => r.id === roleMapping.roleId)[0]
       this.user.roleMappings.push(roleMapping)
-      this.$forceUpdate()
     },
     removeRole () {
       this.user.roleMappings = this.user.roleMappings.filter(roleMapping => roleMapping.enabled !== false)
@@ -142,7 +140,7 @@ export default {
       this.$router.push({ name: 'users' })
     },
     populateFullName () {
-      const isEmail = () => this.user.email.indexOf('@') > -1 && this.user.email.indexOf('.') > 1
+      const isEmail = () => this.user.email && this.user.email.indexOf('@') > -1 && this.user.email.indexOf('.') > 1
       if ((this.newRegistration || !this.user.id) && isEmail()) {
         const username = this.user.email.split('@')[0]
         this.user.name = username
@@ -173,5 +171,9 @@ export default {
 <style scoped>
   .avatar img {
     width: 100%;
+  }
+
+  .user {
+    max-width: 480px;
   }
 </style>

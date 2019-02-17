@@ -1,6 +1,6 @@
 <template lang="pug">
-  .user-photo-container.text-xs-center(row, align-center)
-    v-icon(v-if='!user.photo', :class='{"display-4": size === "large"}') account_circle
+  .user-photo-container.text-xs-center(row, align-center, :class='[size]')
+    v-icon(v-if='!user.photo', :size='size === "large" ? 120 : 24') account_circle
     img.user-photo(:src='user.photo' v-if='user.photo', :class='[size]')
 </template>
 
@@ -39,5 +39,9 @@ export default {
 
   .user-photo-container {
     display: table;
+  }
+
+  .user-photo-container.large {
+    height: 120px;
   }
 </style>

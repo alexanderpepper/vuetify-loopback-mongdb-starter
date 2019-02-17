@@ -1,18 +1,15 @@
 <template lang="pug">
-  v-dialog(v-model='dialog', persistent, width='300')
+  v-container(fluid).password
     v-card
-      v-toolbar
-        v-toolbar-title Password
-        v-spacer
-        v-btn(icon, light, @click='closeDialog')
-          v-icon close
       v-card-text
+        .headline Change Password
+
         form(novalidate, @submit.stop.prevent='changePassword', autocomplete='off')
-          v-text-field(label='Old Password', v-model='password.oldPassword', type='password')
-          v-text-field(label='New Password', v-model='password.newPassword', type='password')
-          v-text-field(label='Confirm Password', v-model='confirmPassword', type='password')
-      v-card-actions
-        v-btn.primary--text(flat, @click='changePassword', :disabled='!buttonEnabled') Change Password
+          v-text-field.mt-2(label='Old Password', v-model='password.oldPassword', type='password')
+          v-text-field.mt-1(label='New Password', v-model='password.newPassword', type='password')
+          v-text-field.mt-1(label='Confirm Password', v-model='confirmPassword', type='password')
+      v-card-actions.text-xs-right
+        v-btn.primary--text(block, flat, @click='changePassword', :disabled='!buttonEnabled') Change Password
 </template>
 
 <script>
@@ -20,16 +17,9 @@ import UserService from '../services/UserService'
 
 export default {
   name: 'password',
-  props: ['showSnackbar', 'setTitle'],
-  created () {
-    this.setTitle('Change Password')
-    setTimeout(() => {
-      this.dialog = true
-    })
-  },
+  props: ['showSnackbar'],
   data () {
     return {
-      dialog: false,
       password: {
         oldPassword: '',
         newPassword: ''
@@ -53,13 +43,13 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    },
-    closeDialog () {
-      this.dialog = false
-      setTimeout(() => {
-        this.$router.push({ name: 'users' })
-      }, 400)
     }
   }
 }
 </script>
+
+<style scoped>
+  .password {
+    max-width: 480px;
+  }
+</style>

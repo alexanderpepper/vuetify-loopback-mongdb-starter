@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Landing from './views/Landing'
 import User from './views/User'
 import Users from './views/Users'
+import Login from './views/Login'
 import Password from './views/Password'
 
 Vue.use(Router)
@@ -21,7 +22,7 @@ export default new Router({
     // },
     {
       path: '/',
-      name: 'Landing',
+      name: 'landing',
       component: Landing
     },
     {
@@ -39,6 +40,11 @@ export default new Router({
       path: '/password',
       name: 'password',
       component: Password
-    }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
   ]
 })

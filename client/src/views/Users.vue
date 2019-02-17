@@ -1,16 +1,18 @@
 <template lang="pug">
-  v-container(fluid)
+  v-container(fluid).users
     v-card
-      v-card-title
-        v-btn(:router='true', :to='{name: "user"}') Create New User
-        v-spacer
-        v-text-field(append-icon='search', label='Search', single-line, hide-details, v-model='search')
-      v-data-table.elevation-1(:headers='headers', :items='users', :search='search')
-        template(slot='items', slot-scope='props')
-          tr(@click='edit(props.item)')
-            td {{ props.item.name }}
-            td {{ props.item.email }}
-            td {{ props.item.roles }}
+      v-card-text
+        .headline Users
+        v-layout(row).mb-3
+          v-btn(:router='true', :to='{name: "user"}') Create New User
+          v-spacer
+          v-text-field(append-icon='search', label='Search', single-line, hide-details, v-model='search')
+        v-data-table.elevation-1(:headers='headers', :items='users', :search='search')
+          template(slot='items', slot-scope='props')
+            tr.cursor-pointer(@click='edit(props.item)')
+              td {{ props.item.name }}
+              td {{ props.item.email }}
+              td {{ props.item.roles }}
 </template>
 
 <script>
@@ -19,7 +21,7 @@ import RoleService from '../services/RoleService'
 
 export default {
   name: 'users',
-  props: ['showSnackbar', 'setTitle', 'setActiveMenuItem'],
+  props: ['showSnackbar', 'setActiveMenuItem'],
   data () {
     return {
       search: '',
@@ -37,7 +39,6 @@ export default {
   async created () {
     this.getUsers()
     this.getRoles()
-    this.setTitle('Users')
     this.setActiveMenuItem('users')
   },
   methods: {
@@ -91,6 +92,9 @@ export default {
 </script>
 
 <style scoped>
+    .users {
+      max-width: 720px;
+    }
     .list__tile.no-highlight:hover {
         background-color: transparent;
     }
