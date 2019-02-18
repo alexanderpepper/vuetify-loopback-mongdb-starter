@@ -40,7 +40,8 @@
       router-view.router-view.mx-auto(
         :show-snackbar='showSnackbar',
         :current-user='user',
-        :set-active-menu-item='setActiveMenuItem')
+        :set-active-menu-item='setActiveMenuItem'
+        :login-success='loginSuccess')
     v-snackbar(
       v-model='snackbar',
       :timeout='3000',
@@ -65,7 +66,10 @@ export default {
         { icon: 'people', title: 'Manage Users', name: 'users' }
       ],
       miniVariant: false,
-      user: { id: 0 },
+      user: {
+        id: 0,
+        name: null
+      },
       snackbar: false,
       snackbarMessage: '',
       snackbarStyle: '',
@@ -92,7 +96,7 @@ export default {
         await LoginService.logout()
       } finally {
         this.user = {}
-        this.$router.push('/')
+        this.$router.push({ name: 'login' })
       }
     },
     getUserInfo () {
@@ -112,7 +116,7 @@ export default {
       if (!user) return
       this.user = user
       this.user.isAdmin = user.roleMappings.find(r => r.role.name === 'admin') !== undefined
-      this.$forceUpdate()
+      this.$router.push({ name: 'landing' })
     },
     setActiveMenuItem (name) {
       this.activeMenuItem = name
